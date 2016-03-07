@@ -23,7 +23,7 @@
 
     <include layout="@layout/content_login" />
 
-    <android.support.design.widget.FloatingActionButton
+    <ImageButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,5 +31,16 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@android:drawable/ic_input_add"
         android:onClick="añadir"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|bottom">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Finalizar"
+            android:onClick="finalizar"/>
+    </RelativeLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>
