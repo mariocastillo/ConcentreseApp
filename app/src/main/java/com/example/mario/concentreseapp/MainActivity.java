@@ -27,35 +27,52 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
+import java.util.logging.Handler;
 
 public class MainActivity extends AppCompatActivity {
     public static int count=0;
     public static int anteriorButton;
     public static int anteriorButtoncolor;
+    public static int end;
+    Player p;
+    public static int turno=0;
+    ArrayList<Player> listp= new ArrayList<>();
+    public TextView jugador;
+    public List<String> colores= Arrays.asList("red", "blue", "green", "black","cyan", "magenta","yellow","aqua","red", "blue", "green", "black","cyan", "magenta","yellow","aqua");
+    /*,"fuchsia", "lime", "maroon","navy", "olive", "purple", "silver", "teal",*/
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Intent i=getIntent();
-        Player listp = (Player) i.getSerializableExtra("player"+"1");
-        LinearLayout lin= (LinearLayout) findViewById(R.id.linear1);
-        TextView nombre=new TextView(this);
-        nombre.setText(listp.name+listp.score);
-        lin.addView(nombre);
+        int nume= i.getIntExtra("numplayers",0);
+        for (int h=0;h<=nume;h++){
+            p = (Player) i.getSerializableExtra("player"+h);
+            listp.add(p);
+            LinearLayout lin= (LinearLayout) findViewById(R.id.linear1);
+            TextView nombre=new TextView(this);
+            nombre.setText("Name: "+p.name+"\n"+"Score: "+p.score);
+            nombre.setId(h+100);
+            lin.addView(nombre);
+        }
 
 
 
-        dinamicallygrid(7, 7);
+        dinamicallygrid(4, 4,listp);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view,"Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -85,11 +102,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void dinamicallygrid(int row,int column){
+    public void dinamicallygrid(final int row, final int column, final ArrayList<Player> lplayers){
+        final int grilla=column*row;
+        end=grilla;
+        Collections.shuffle(colores);
         GridLayout grid= (GridLayout) findViewById(R.id.gridLayout);
         grid.setRowCount(row);
         grid.setColumnCount(column);
-        for (int i=0,r=0,c=0;i<row*column;i++,c++){
+        for (int i=0,r=0,c=0;i<grilla;i++,c++){
             if (c==column){
                 c=0;
                 r++;
@@ -115,39 +135,109 @@ public class MainActivity extends AppCompatActivity {
 
             button.setLayoutParams(params);
             grid.addView(button);
+            final TextView pw = new TextView(this);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (count%2==0 & count!=0){
+                        turno++;
+                        if (turno==lplayers.size()){
+                            turno=0;
+                        }
+                    }
                     count++;
-                    Button btn = (Button) findViewById(v.getId());
+                    final Button btn = (Button) findViewById(v.getId());
                     switch (v.getId()) {
                         case 0:
-                            btn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.Green));
+                            btn.setBackgroundColor(Color.parseColor(colores.get(0)));
                             break;
                         case 1:
-                            btn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.Green));
+                            btn.setBackgroundColor(Color.parseColor(colores.get(1)));
                             break;
                         case 2:
-                            btn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.Rojo));
+                            btn.setBackgroundColor(Color.parseColor(colores.get(2)));
                             break;
                         case 3:
-                            btn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.Rojo));
+                            btn.setBackgroundColor(Color.parseColor(colores.get(3)));
                             break;
-
+                        case 4:
+                            btn.setBackgroundColor(Color.parseColor(colores.get(4)));
+                            break;
+                        case 5:
+                            btn.setBackgroundColor(Color.parseColor(colores.get(5)));
+                            break;
+                        case 6:
+                            btn.setBackgroundColor(Color.parseColor(colores.get(6)));
+                            break;
+                        case 7:
+                            btn.setBackgroundColor(Color.parseColor(colores.get(7)));
+                            break;
+                        case 8:
+                            btn.setBackgroundColor(Color.parseColor(colores.get(8)));
+                            break;
+                        case 9:
+                            btn.setBackgroundColor(Color.parseColor(colores.get(9)));
+                            break;
+                        case 10:
+                            btn.setBackgroundColor(Color.parseColor(colores.get(10)));
+                            break;
+                        case 11:
+                            btn.setBackgroundColor(Color.parseColor(colores.get(11)));
+                            break;
+                        case 12:
+                            btn.setBackgroundColor(Color.parseColor(colores.get(12)));
+                            break;
+                        case 13:
+                            btn.setBackgroundColor(Color.parseColor(colores.get(13)));
+                            break;
+                        case 14:
+                            btn.setBackgroundColor(Color.parseColor(colores.get(14)));
+                            break;
+                        case 15:
+                            btn.setBackgroundColor(Color.parseColor(colores.get(15)));
+                            break;
                     }
                     if(count%2==0 & ((ColorDrawable) v.getBackground()).getColor()!=anteriorButtoncolor ){
-                        btn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.Gray));
-                        Button btnanterior= (Button) findViewById(anteriorButton);
-                        btnanterior.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.Gray));
+                        btn.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                btn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.Gray));
+
+                            }
+                        },1000);
+
+                        final Button btnanterior= (Button) findViewById(anteriorButton);
+                        btnanterior.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                btnanterior.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.Gray));
+                            }
+                        }, 1000);
                         Toast toast1 =
                                 Toast.makeText(getApplicationContext(),"te equivocaste", Toast.LENGTH_SHORT);
 
                         toast1.show();
                     }
                     if (count%2==0 &((ColorDrawable) v.getBackground()).getColor()==anteriorButtoncolor ){
+                        end=end-2;
+                        listp.get(turno).score=listp.get(turno).score+10;
+                        jugador= (TextView) findViewById(100+turno);
+                        jugador.setText("Name: " + listp.get(turno).name + "\n" + "Score: " + listp.get(turno).score);
                         Button btnanterior= (Button) findViewById(anteriorButton);
                         btn.setEnabled(false);
                         btnanterior.setEnabled(false);
+                        if (end==0){
+                            Collections.sort(listp, new Comparator<Player>() {
+                                @Override
+                                public int compare(Player p1, Player p2) {
+                                    return new Integer(p2.score).compareTo(p1.score);
+                                }
+                            });
+                            LinearLayout linear= (LinearLayout) findViewById(R.id.linear2);
+                            pw.setText("Name: "+listp.get(0).name+"\n"+"Score: "+listp.get(0).score);
+                            linear.addView(pw);
+
+                        }
 
                     }
 

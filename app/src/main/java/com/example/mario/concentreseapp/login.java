@@ -31,6 +31,13 @@ public class login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        LinearLayout linear = (LinearLayout) findViewById(R.id.login);
+        TextView newp = new TextView(this);
+        EditText newpe = new EditText(this);
+        newp.setText("Nombre");
+        newpe.setId(0);
+        linear.addView(newp);
+        linear.addView(newpe);
 
 
 
@@ -58,11 +65,12 @@ public class login extends AppCompatActivity {
 
     public void finalizar(View view) {
         Intent i= new Intent(getApplicationContext(),MainActivity.class);
-        for (int k=1;k<=numplayers;k++){
+        for (int k=0;k<=numplayers;k++){
             String ID=String.valueOf(k);
             EditText e= (EditText) findViewById(getResources().getIdentifier(ID,"id","com.example.mario.concentreseapp"));
             p= new Player(e.getText().toString(),0);
-            i.putExtra("player"+String.valueOf(count),p);
+            i.putExtra("player"+k,p);
+            i.putExtra("numplayers", numplayers);
         }
         startActivity(i);
 
