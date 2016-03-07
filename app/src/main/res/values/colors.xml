@@ -7,4 +7,9 @@
     <color name="Green">#FF12ED15</color>
     <color name="Rojo">#FFED1228</color>
     <color name="White">#FFFFFFFF</color>
+    <color name="Azul">#FF0226F6</color>
+    <color name="Rosado">#FFF602DE</color>
+    <color name="Amarillo">#FFFFF86A</color>
+    <color name="Negro">#FF000000</color>
+
 </resources>
