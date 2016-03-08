@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     /*,"fuchsia", "lime", "maroon","navy", "olive", "purple", "silver", "teal",*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        final int row=4;
+        final int column=4;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             listp.add(p);
             LinearLayout lin= (LinearLayout) findViewById(R.id.linear1);
             TextView nombre=new TextView(this);
-            nombre.setText("Name: "+p.name+"\n"+"Score: "+p.score);
+            nombre.setText(getResources().getString(R.string.name)+": "+p.name+"\n"+getResources().getString(R.string.score) +": "+p.score);
             nombre.setId(h+100);
             lin.addView(nombre);
         }
@@ -68,12 +71,25 @@ public class MainActivity extends AppCompatActivity {
         dinamicallygrid(4, 4,listp);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        final ImageButton restart = (ImageButton) findViewById(R.id.restart);
+        final TextView pw = new TextView(this);
+        restart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Collections.shuffle(colores);
+                for (int i = 0; i < row * column; i++) {
+                    Button button= (Button) findViewById(i);
+                    button.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.Gray));
+                    button.setEnabled(true);
+                    if (i < listp.size()) {
+                        listp.get(i).score = 0;
+                        LinearLayout linear= (LinearLayout) findViewById(R.id.linear2);
+                        TextView pw= (TextView) findViewById(1001);
+                        pw.setText("");
+                        jugador= (TextView) findViewById(100+i);
+                        jugador.setText(getResources().getString(R.string.name)+": "+ listp.get(i).name + "\n" + getResources().getString(R.string.score)+": " + listp.get(i).score);
+                    }
+                }
             }
         });
     }
@@ -103,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void dinamicallygrid(final int row, final int column, final ArrayList<Player> lplayers){
+        final TextView pw = new TextView(this);
+        pw.setId(1001);
         final int grilla=column*row;
         end=grilla;
         Collections.shuffle(colores);
@@ -135,14 +153,13 @@ public class MainActivity extends AppCompatActivity {
 
             button.setLayoutParams(params);
             grid.addView(button);
-            final TextView pw = new TextView(this);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (count%2==0 & count!=0){
+                    if (count % 2 == 0 & count != 0) {
                         turno++;
-                        if (turno==lplayers.size()){
-                            turno=0;
+                        if (turno == lplayers.size()) {
+                            turno = 0;
                         }
                     }
                     count++;
@@ -197,16 +214,16 @@ public class MainActivity extends AppCompatActivity {
                             btn.setBackgroundColor(Color.parseColor(colores.get(15)));
                             break;
                     }
-                    if(count%2==0 & ((ColorDrawable) v.getBackground()).getColor()!=anteriorButtoncolor ){
+                    if (count % 2 == 0 & ((ColorDrawable) v.getBackground()).getColor() != anteriorButtoncolor) {
                         btn.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 btn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.Gray));
 
                             }
-                        },1000);
+                        }, 1000);
 
-                        final Button btnanterior= (Button) findViewById(anteriorButton);
+                        final Button btnanterior = (Button) findViewById(anteriorButton);
                         btnanterior.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -214,35 +231,36 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }, 1000);
                         Toast toast1 =
-                                Toast.makeText(getApplicationContext(),"te equivocaste", Toast.LENGTH_SHORT);
+                                Toast.makeText(getApplicationContext(), "te equivocaste", Toast.LENGTH_SHORT);
 
                         toast1.show();
                     }
-                    if (count%2==0 &((ColorDrawable) v.getBackground()).getColor()==anteriorButtoncolor ){
-                        end=end-2;
-                        listp.get(turno).score=listp.get(turno).score+10;
-                        jugador= (TextView) findViewById(100+turno);
-                        jugador.setText("Name: " + listp.get(turno).name + "\n" + "Score: " + listp.get(turno).score);
-                        Button btnanterior= (Button) findViewById(anteriorButton);
+                    if (count % 2 == 0 & ((ColorDrawable) v.getBackground()).getColor() == anteriorButtoncolor) {
+                        end = end - 2;
+                        listp.get(turno).score = listp.get(turno).score + 10;
+                        jugador = (TextView) findViewById(100 + turno);
+                        jugador.setText(getResources().getString(R.string.name)+": " + listp.get(turno).name + "\n" + getResources().getString(R.string.score)+": " + listp.get(turno).score);
+                        Button btnanterior = (Button) findViewById(anteriorButton);
                         btn.setEnabled(false);
                         btnanterior.setEnabled(false);
-                        if (end==0){
+                        if (end == 0) {
                             Collections.sort(listp, new Comparator<Player>() {
                                 @Override
                                 public int compare(Player p1, Player p2) {
                                     return new Integer(p2.score).compareTo(p1.score);
                                 }
                             });
-                            LinearLayout linear= (LinearLayout) findViewById(R.id.linear2);
-                            pw.setText("Name: "+listp.get(0).name+"\n"+"Score: "+listp.get(0).score);
+                            LinearLayout linear = (LinearLayout) findViewById(R.id.linear2);
+                            pw.setText(getResources().getString(R.string.ganador)+"\n"+getResources().getString(R.string.name)+": " + listp.get(0).name + "\n" + getResources().getString(R.string.score)+": " + listp.get(0).score);
                             linear.addView(pw);
+                            end=column*row;
 
                         }
 
                     }
 
-                    anteriorButtoncolor =( (ColorDrawable) btn.getBackground()).getColor();
-                    anteriorButton=v.getId();
+                    anteriorButtoncolor = ((ColorDrawable) btn.getBackground()).getColor();
+                    anteriorButton = v.getId();
                 }
             });
 
