@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Focus App</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">Concentrese App</string>
+    <string name="name">Name</string>
+    <string name="score">Score</string>
+    <string name="finalizar">Finish</string>
+    <string name="ganador">WINNER!!</string>
+    <string name="creador">Creator</string>
+</resources>
